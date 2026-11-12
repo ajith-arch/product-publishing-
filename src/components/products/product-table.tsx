@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/table";
 import { imageStore } from "@/lib/product/image-store";
 import type { ProductRecord } from "@/lib/product/schema";
+import { productEditHref } from "@/lib/product/routes";
 import { productStore } from "@/lib/product/store";
 
 const dateFormat = new Intl.DateTimeFormat(undefined, {
@@ -56,7 +57,7 @@ export function ProductTable({
             <TableCell className="font-mono text-xs">{p.input.internalId}</TableCell>
             <TableCell className="max-w-[24rem] truncate">
               <Link
-                href={`/products/${p.id}${tab ? `?tab=${tab}` : ""}`}
+                href={productEditHref(p.id, tab)}
                 className="font-medium hover:underline focus-visible:underline focus-visible:outline-none"
               >
                 {p.edited.displayName || p.input.productName}

@@ -115,13 +115,18 @@ A task is complete when:
 5. Remaining limitations are clearly stated.
 
 ## Project Layout (current)
-- `src/app/` — routes (App Router): `/`, `/products/new`, `/products`, `/products/[id]` (editor, `?tab=`), `/exports`, `/settings/field-mapping`, `/settings`.
+- `src/app/` — routes (App Router): `/`, `/products/new`, `/products`, `/products/edit?id=…&tab=…` (editor), `/exports`, `/settings/field-mapping`, `/settings`.
 - `src/components/ui/` — shadcn/ui primitives (added by hand; the shadcn registry is not reachable from the cloud sandbox).
 - `src/components/layout/` — app shell, sidebar, header, empty states.
 - `src/components/products/` — New Product form, image picker, product tables.
 - `src/components/editor/` — product editor and its six tabs.
 - `src/config/navigation.ts` — sidebar groups and breadcrumb lookup.
 - `src/lib/product/` — Zod schema, mock generator, readiness rules, pure operations, browser stores, tests.
+
+## Hosting (prototype)
+- Static export (`output: "export"` in `next.config.ts`); no server code or API routes yet.
+- `.github/workflows/deploy-pages.yml` builds and deploys to GitHub Pages on every push to `main`.
+- Milestone 4 needs server-side AI calls, so hosting must move off static export at that point.
 
 ## Data & State (prototype)
 - Product records persist in `localStorage` (`pps.products.v1`), validated with Zod on load.

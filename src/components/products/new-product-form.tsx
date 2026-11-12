@@ -18,6 +18,7 @@ import {
   type LocalImage,
 } from "@/lib/product/image-store";
 import { productInputSchema, type ProductInput } from "@/lib/product/schema";
+import { productEditHref } from "@/lib/product/routes";
 import { productStore } from "@/lib/product/store";
 
 export function NewProductForm() {
@@ -49,7 +50,7 @@ export function NewProductForm() {
     const record = productStore.create(values);
     imageStore.set(record.id, { images, primaryId: images[0]?.id ?? null });
     handedOff.current = true;
-    router.push(`/products/${record.id}`);
+    router.push(productEditHref(record.id));
   });
 
   return (
