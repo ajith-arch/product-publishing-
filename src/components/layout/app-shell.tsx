@@ -7,12 +7,12 @@ import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from "@/components/ui/sheet";
 import { SidebarBrand, SidebarNav } from "@/components/layout/sidebar-nav";
-import { getActiveNavItem } from "@/config/navigation";
+import { getActiveNav } from "@/config/navigation";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
-  const section = getActiveNavItem(pathname)?.title ?? "Publishing Studio";
+  const active = getActiveNav(pathname);
 
   return (
     <div className="flex min-h-dvh">
@@ -27,7 +27,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <aside className="bg-sidebar border-sidebar-border sticky top-0 hidden h-dvh w-60 shrink-0 flex-col gap-6 border-r py-5 lg:flex">
         <SidebarBrand />
         <SidebarNav />
-        <p className="text-muted-foreground mt-auto px-6 text-xs">MVP · Local prototype</p>
       </aside>
 
       {/* Mobile sidebar */}
@@ -51,15 +50,22 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           >
             <Menu />
           </Button>
-          <div className="flex min-w-0 items-center gap-2 text-sm">
-            <span className="text-muted-foreground hidden sm:inline">
-              AI Product Publishing Studio
-            </span>
-            <span className="text-muted-foreground hidden sm:inline" aria-hidden>
-              /
-            </span>
-            <span className="truncate font-medium">{section}</span>
-          </div>
+          <nav aria-label="Breadcrumb" className="min-w-0 text-sm">
+            <ol className="flex items-center gap-2">
+              <li className="text-muted-foreground hidden sm:block">
+                {active?.group ?? "Workspace"}
+              </li>
+              <li aria-hidden className="text-muted-foreground hidden sm:block">
+                /
+              </li>
+              <li aria-current="page" className="truncate font-medium">
+                {active?.item.title ?? "Publish Studio"}
+              </li>
+            </ol>
+          </nav>
+          <span className="bg-muted text-muted-foreground ml-auto hidden rounded-full px-3 py-1 text-xs sm:inline">
+            Prototype · Mock data
+          </span>
         </header>
 
         <main

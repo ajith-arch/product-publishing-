@@ -1,21 +1,26 @@
-import { History } from "lucide-react";
+import Link from "next/link";
+import { PackagePlus } from "lucide-react";
 
 import { PageHeader } from "@/components/layout/page-header";
-import { PlaceholderPanel } from "@/components/layout/placeholder-panel";
+import { ProductsView } from "@/components/products/products-view";
+import { Button } from "@/components/ui/button";
 
-export default function ProductHistoryPage() {
+export default function ProductsPage() {
   return (
     <>
       <PageHeader
-        title="Product History"
-        description="Every product you've generated, edited, approved or exported."
+        title="Products"
+        description="Search, review and edit your product drafts."
+        actions={
+          <Button asChild>
+            <Link href="/products/new">
+              <PackagePlus />
+              New Product
+            </Link>
+          </Button>
+        }
       />
-      <PlaceholderPanel
-        icon={History}
-        title="No saved products yet"
-        description="Products will be listed here once the product data model and draft storage exist."
-        milestone="Milestone 3"
-      />
+      <ProductsView />
     </>
   );
 }

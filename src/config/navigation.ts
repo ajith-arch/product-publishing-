@@ -1,8 +1,10 @@
 import {
-  FileSpreadsheet,
-  History,
+  CirclePlus,
+  FileDown,
   LayoutDashboard,
-  PackagePlus,
+  Package,
+  Settings,
+  Settings2,
   type LucideIcon,
 } from "lucide-react";
 
@@ -10,41 +12,39 @@ export type NavItem = {
   title: string;
   href: string;
   icon: LucideIcon;
-  description: string;
 };
 
-export const NAV_ITEMS: readonly NavItem[] = [
+export type NavGroup = {
+  label: string;
+  items: readonly NavItem[];
+};
+
+export const NAV_GROUPS: readonly NavGroup[] = [
   {
-    title: "Dashboard",
-    href: "/",
-    icon: LayoutDashboard,
-    description: "Overview of product drafts and approvals",
+    label: "Workspace",
+    items: [
+      { title: "Dashboard", href: "/", icon: LayoutDashboard },
+      { title: "New Product", href: "/products/new", icon: CirclePlus },
+      { title: "Products", href: "/products", icon: Package },
+      { title: "Exports", href: "/exports", icon: FileDown },
+    ],
   },
   {
-    title: "New Product",
-    href: "/products/new",
-    icon: PackagePlus,
-    description: "Create a listing from SKU, Internal ID and name",
-  },
-  {
-    title: "Product History",
-    href: "/products",
-    icon: History,
-    description: "All generated, edited and exported products",
-  },
-  {
-    title: "Export Settings",
-    href: "/settings/export",
-    icon: FileSpreadsheet,
-    description: "NetSuite CSV column mapping and defaults",
+    label: "Settings",
+    items: [
+      { title: "Field Mapping", href: "/settings/field-mapping", icon: Settings2 },
+      { title: "Settings", href: "/settings", icon: Settings },
+    ],
   },
 ];
 
-/** Most specific match wins, so /products/new resolves to "New Product", not "Product History". */
-export function getActiveNavItem(pathname: string): NavItem | undefined {
-  return [...NAV_ITEMS]
-    .sort((a, b) => b.href.length - a.href.length)
-    .find((item) =>
+const ALL_ITEMS = NAV_GROUPS.flatMap((g) => g.items.map((item) => ({ item, group: g.label })));
+
+/** Most specific match wins, so /products/new resolves to "New Product", not "Products". */
+export function getActiveNav(pathname: string): { item: NavItem; group: string } | undefined {
+  return [...ALL_ITEMS]
+    .sort((a, b) => b.item.href.length - a.item.href.length)
+    .find(({ item }) =>
       item.href === "/"
         ? pathname === "/"
         : pathname === item.href || pathname.startsWith(`${item.href}/`),

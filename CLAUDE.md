@@ -115,23 +115,32 @@ A task is complete when:
 5. Remaining limitations are clearly stated.
 
 ## Project Layout (current)
-- `src/app/` — routes (App Router). `(studio)` route group holds all shell pages.
-- `src/components/ui/` — shadcn/ui primitives (added by hand; registry is not reachable from the cloud sandbox).
-- `src/components/layout/` — app shell, sidebar, header.
-- `src/config/` — static config such as navigation.
-- `src/lib/` — utilities and mock data (`src/lib/mock/`).
+- `src/app/` — routes (App Router): `/`, `/products/new`, `/products`, `/products/[id]` (editor, `?tab=`), `/exports`, `/settings/field-mapping`, `/settings`.
+- `src/components/ui/` — shadcn/ui primitives (added by hand; the shadcn registry is not reachable from the cloud sandbox).
+- `src/components/layout/` — app shell, sidebar, header, empty states.
+- `src/components/products/` — New Product form, image picker, product tables.
+- `src/components/editor/` — product editor and its six tabs.
+- `src/config/navigation.ts` — sidebar groups and breadcrumb lookup.
+- `src/lib/product/` — Zod schema, mock generator, readiness rules, pure operations, browser stores, tests.
+
+## Data & State (prototype)
+- Product records persist in `localStorage` (`pps.products.v1`), validated with Zod on load.
+- `generated` (raw output) and `edited` (user's saved copy) are separate; `input` identifiers are never modified.
+- Images are in-memory object URLs only; they are cleared on refresh.
+- Any saved edit to an approved product moves it back to `draft`.
 
 ## Commands
 - `npm run dev` — local dev server
 - `npm run typecheck` — TypeScript check
 - `npm run lint` — ESLint
+- `npm test` — Vitest unit tests
 - `npm run build` — production build
 
 ## Milestone Status
 - [x] M1 Project foundation
-- [ ] M2 Product input
-- [ ] M3 Product data schema
+- [x] M2 Product input
+- [x] M3 Product data schema (mock generator)
 - [ ] M4 Research and AI engine
-- [ ] M5 Review and edit workspace
-- [ ] M6 CSV export engine
+- [x] M5 Review and edit workspace (UI; regenerate-by-field pending)
+- [ ] M6 CSV export engine (Export Preview + Field Mapping are read-only placeholders)
 - [ ] M7 Quality assurance
